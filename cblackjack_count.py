@@ -205,8 +205,9 @@ class Shoe(Deck):
         init for the shoe. Will contain a certain number of decks shuffled together
         '''
         self._cards = []
+        singleDeckCards = Deck()._cards
         for i in range(numDecks):
-            self._cards.extend(Deck()._cards)
+            self._cards.extend(singleDeckCards)
 
         self._setupCounts()
         random.shuffle(self._cards) # shuffle in place
