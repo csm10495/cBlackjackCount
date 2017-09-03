@@ -216,13 +216,15 @@ if __name__ == '__main__':
     shoe = Shoe(numDecks=numDecks)
     while True:
         print ('=' * 40)
-        cards = raw_input("Give cards to remove from deck. Seperate them with commas.\n  Or you can give 'b' to get the percent chance for bust if you take a next card: ")
+        cards = raw_input("Give cards to remove from deck. 10/T=Ten, J=Jack, Q=Queen, K=King, A=Ace\n  Or you can give 'b' to get the percent chance for bust if you take the next card: ")
         if cards.lower() == 'b':
             currentHandValue = int(raw_input("Current hand value: "))
             shoe.getBustChance(currentHandValue)
             continue
 
-        cards = cards.split(',')
+        cards = cards.replace('10', 'T') # get into one-character mode
+        if ',' in cards:
+            cards = cards.split(',')
         for i in cards:
             shoe.removeCardWithValue(i)
 
