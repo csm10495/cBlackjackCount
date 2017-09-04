@@ -189,7 +189,7 @@ class Deck(object):
                 cardValue = 1
 
             if cardValue > maxOkCard:
-                cardsThatWouldBust += 1
+                cardsThatWouldBust += cardCount
 
         if self.getNumberOfRemainingCards() > 0:
             print ('Chance for bust: %.2f%%' % (cardsThatWouldBust / self.getNumberOfRemainingCards() * 100))
