@@ -69,6 +69,7 @@ class Deck(object):
         init for a standard deck of 52 cards
         '''
         self._cards = []
+        self._count = 0
         for num in LINE:
             for suit in SUITS:
                 self._cards.append(Card(num, suit))
@@ -144,6 +145,7 @@ class Deck(object):
             print ("%-12s : %0.02f%% (%d cards left)" % ("Any 10-Value", tenVals / self.getNumberOfRemainingCards() * 100, tenVals))
 
             self.getBlackjackChance()
+            print ("Count: %+d" % self.getCount())
 
             print ('%d cards left' % self.getNumberOfRemainingCards())
         else:
@@ -161,7 +163,7 @@ class Deck(object):
         except:
             print ('-Warning- Had trouble getting the value of %s' % value)
             return
-
+            
         delCardIdx = None
         for idx, itm in enumerate(self._cards):
             if itm.value == value:
@@ -174,6 +176,11 @@ class Deck(object):
         if delCardIdx is None:
             print ("-Warning- No card with value %s found!" % value)
         else:
+            # Keep track of blackjack count, but only if found
+            if isinstance(value, str) or value == 10:
+                self._count -= 1
+            elif value <= 6:
+                self._count += 1
             del self._cards[delCardIdx]
 
     def getBustChance(self, handValue):
@@ -195,6 +202,12 @@ class Deck(object):
             print ('Chance for bust: %.2f%%' % (cardsThatWouldBust / self.getNumberOfRemainingCards() * 100))
         else:
             print ("No remaining cards")
+            
+    def getCount(self):
+        '''
+        return the running blackjack count
+        '''
+        return self._count
 
 class Shoe(Deck):
     '''
@@ -204,6 +217,7 @@ class Shoe(Deck):
         '''
         init for the shoe. Will contain a certain number of decks shuffled together
         '''
+        self._count = 0
         self._cards = []
         singleDeckCards = Deck()._cards
         for i in range(numDecks):
